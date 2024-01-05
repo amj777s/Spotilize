@@ -30,6 +30,24 @@ export type TopArtistInfo = {
 
 }
 
+export type TrackInfo = {
+    title: string,
+    length: string,
+    artists: string [],
+    album: string,
+    albumImage: string
+
+}
+
+export type PlaylistInfo = {
+    name: string,
+    public: boolean,
+    id: string,
+    totalTracks: number,
+    tracks: TrackInfo [],
+    image: string
+}
+
 export function isTrackArray(data: TopTrackInfo[] | TopArtistInfo[]): data is TopTrackInfo[] {
     return (data as TopTrackInfo[])[0].title !== undefined;
   }

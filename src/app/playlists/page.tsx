@@ -1,4 +1,5 @@
 "use client"
+import PlaylistPanel from "@/components/PlaylistPanel";
 import { useGetPlaylistsQuery } from "@/redux/slices/apiSlice";
 
 
@@ -8,17 +9,15 @@ export default function Playlists() {
     let content;
 
     if (error) {
-        if ('status' in error) {
-            // View the error in the console
-            const errMsg = 'error' in error ? error.error : JSON.stringify(error.data);
-            console.error(errMsg);
+    
+            console.error(error);
             content = (
                 <div>
                     <h3>Something went Wrong...</h3>
                     <h3>Try again</h3>
                 </div>
             )
-        }
+        
     }
 
     if (isLoading) {
@@ -28,16 +27,13 @@ export default function Playlists() {
     }
 
     if (data) {
-        console.log(data);
-        
-        content = (
-            <h3>check console</h3>
-        )
+      
+        content =  data.map(playlists=> <PlaylistPanel key={playlists.id} playlistInfo={playlists} />)
     }
 
     return (
-        <div className=" p-5 gap-5 h-full bg-slate-900 text-slate-100">
+        <div className=" flex flex-col p-5 gap-5 overflow-y-scroll h-full bg-slate-900 text-slate-100">
             {content}
         </div>
     )
-}
+}   

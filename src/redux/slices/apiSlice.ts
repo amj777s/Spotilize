@@ -5,7 +5,7 @@ import type {
     FetchBaseQueryError,
   } from '@reduxjs/toolkit/query'
 import { Spotify } from "@/spotify/spot";
-import { SpotifyTopSearchParams, TopArtistInfo, TopTrackInfo } from "@/types";
+import { PlaylistInfo, SpotifyTopSearchParams, TopArtistInfo, TopTrackInfo, TrackInfo } from "@/types";
 
 
 const baseQuery = fetchBaseQuery({
@@ -47,7 +47,7 @@ export const spotifyApi = createApi({
         // In future find type for response instead of bypassing error with any
         getTopItems: builder.query({
             query: (params:SpotifyTopSearchParams) => `me/top/${params.type}?time_range=${params.timeRange}&limit=${params.limit}&offset=${params.offset}`,
-            transformResponse: (response: any, meta,arg: SpotifyTopSearchParams)=> {
+            transformResponse: (response: any, meta, arg: SpotifyTopSearchParams)=> {
                 console.log(arg)
                 if(arg.type === 'tracks'){
                     const refinedResponse: TopTrackInfo[] = [];
@@ -69,7 +69,6 @@ export const spotifyApi = createApi({
 
                 }
                 else{
-                    console.log('here');
                     const refinedResponse: TopArtistInfo[] = [];
                     response.items.map(info => {
                         const artistInfo = {} as TopArtistInfo;
@@ -87,25 +86,53 @@ export const spotifyApi = createApi({
         }),
         
         getPlaylists: builder.query({
-            query: (arg: void) => 'me/playlists',
-            transformResponse: (response: any, arg, meta) => {
-                return response.items.map(playlistInfo => {
-                    return {
-                        name: playlistInfo.name,
-                        public: playlistInfo.public,
-                        id: playlistInfo.id,
-                        tracks: playlistInfo.tracks.total
-                    }
-                } )
+           queryFn: async(arg: void, api, extraOptions) => {
+            
+            try {
+                const playlists: PlaylistInfo[] = [];
+                const {data} = await baseQueryWithReauth({url: 'me/playlists'},api, extraOptions);
+                
+                // Fetch data related to playlists
+                data.items.map(playlistInfo => {
+                    const playlist = {} as PlaylistInfo;
+                    playlist.name = playlistInfo.name;
+                    playlist.public = playlistInfo.public;
+                    playlist.id = playlistInfo.id;
+                    playlist.totalTracks = playlistInfo.tracks.total;
+                    playlists.push(playlist);
+                    playlist.tracks = [];
+                })
+
+                // Fetch data related to tracks in playlists
+               await Promise.all(playlists.map(async (info, index) => {
+                    const {data} = await baseQueryWithReauth({url:`playlists/${info.id}`}, api, extraOptions);
+                    playlists[index].image = data.images[0].url;
+                    data.tracks.items.map(trackInfo => {
+                        const track = {} as TrackInfo;
+                        track.title = trackInfo.track.name;
+                        const minutes = Math.floor(trackInfo.track.duration_ms /1000 /60);
+                        const seconds = Math.floor(trackInfo.track.duration_ms/1000 % 60 );
+                        track.length = seconds > 10 ? `${minutes}:${seconds}`: `${minutes}:0${seconds}`;
+                        track.artists = trackInfo.track.artists.map(artist => artist.name);
+                        track.album = trackInfo.track.album.name;
+                        track.albumImage = trackInfo.track.album.images[0].url;
+                        playlists[index].tracks.push(track);
+
+                    });
+
+               }))
+                
+                return {data: playlists, error: undefined}
+            
+            } catch (error) {
+                console.log(`this is ${error}`);
+                return {error: {status: 500, statusText: error,  data: undefined}, }
             }
+          
+        }
         }) 
     })
 });
 
 export const { useGetUserDataQuery, useLazyGetTopItemsQuery, useGetPlaylistsQuery } = spotifyApi;
-
-// name: playlistInfo.name,
-// public: playlistInfo.public,
-// id: playlistInfo.id,
-// tracks: playlistInfo.tracks.total
 
