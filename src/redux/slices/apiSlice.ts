@@ -5,7 +5,7 @@ import type {
     FetchBaseQueryError,
   } from '@reduxjs/toolkit/query'
 import { Spotify } from "@/spotify/spot";
-import { PlaylistInfo, SpotifyTopSearchParams, TopArtistInfo, TopTrackInfo, TrackInfo } from "@/types";
+import { PlaylistCreateData, PlaylistInfo, SpotifyTopSearchParams, TopArtistInfo, TopTrackInfo, TrackInfo } from "@/types";
 
 
 const baseQuery = fetchBaseQuery({
@@ -41,7 +41,7 @@ export const spotifyApi = createApi({
     endpoints: (builder) => ({
        
         getUserData: builder.query({
-            query: () => 'me'
+            query: (arg:void) => 'me'
         }),
         
         // In future find type for response instead of bypassing error with any
@@ -62,6 +62,7 @@ export const spotifyApi = createApi({
                         trackInfo.album = info.album.name;
                         trackInfo.release_date = info.album.release_date;
                         trackInfo.album_image = info.album.images[0].url;
+                        trackInfo.uri = info.uri;
                         refinedResponse.push(trackInfo);
                 })
 
@@ -116,6 +117,9 @@ export const spotifyApi = createApi({
                         track.artists = trackInfo.track.artists.map(artist => artist.name);
                         track.album = trackInfo.track.album.name;
                         track.albumImage = trackInfo.track.album.images[0].url;
+                        track.isPlayable = trackInfo.track.is_playable;
+                        track.previewUrl = trackInfo.track.preview_url;
+                        track.uri = trackInfo.track.uri;
                         playlists[index].tracks.push(track);
 
                     });
@@ -130,9 +134,58 @@ export const spotifyApi = createApi({
             }
           
         }
-        }) 
+        }),
+        
+        getTracks: builder.query({
+            query: (url:string) => url,
+            transformResponse: (response: any, meta, arg: string) => {
+                const tracks: TrackInfo[] = [];
+                response.tracks.items.map(trackInfo => {
+                    const track = {} as TrackInfo;
+                    track.title = trackInfo.name;
+                    const minutes = Math.floor(trackInfo.duration_ms /1000 /60);
+                    const seconds = Math.floor(trackInfo.duration_ms/1000 % 60 );
+                    track.length = seconds > 10 ? `${minutes}:${seconds}`: `${minutes}:0${seconds}`;
+                    track.artists = trackInfo.artists.map(artist => artist.name);
+                    track.album = trackInfo.album.name;
+                    track.albumImage = trackInfo.album.images[0].url;
+                    track.isPlayable = trackInfo.is_playable;
+                    track.previewUrl = trackInfo.preview_url;
+                    track.uri = trackInfo.uri;
+                    tracks.push(track);
+
+                });
+                return tracks
+            }
+        }),
+
+        createPlaylists: builder.mutation({
+            queryFn: async (arg:PlaylistCreateData, api, extraOptions)=> {
+                try {
+                    const body = {
+                        "name":arg.name,
+                        "description": arg.description,
+                        "public": arg.public
+
+                    }
+                    console.log(arg);
+                    const playlistInfo:any = await baseQueryWithReauth({method: "POST", url: `users/${arg.userId}/playlists`, body:body},api, extraOptions);
+                    const playListID: string  = playlistInfo.data.id;
+                    const playlistBody = {
+                        "uris": arg.uris
+                    }
+                    const {data} = await baseQueryWithReauth({method:"POST", url: `playlists/${playListID}/tracks`, body:playlistBody}, api, extraOptions);
+
+                    return {data: 'Playlist Created', error: undefined}
+                    
+                } catch (error) {
+                    console.log(`this is ${error}`);
+                    return {error: {status: 500, statusText: error,  data: undefined}, }
+                }
+            }
+        })
     })
 });
 
-export const { useGetUserDataQuery, useLazyGetTopItemsQuery, useGetPlaylistsQuery } = spotifyApi;
+export const { useGetUserDataQuery, useLazyGetTopItemsQuery, useGetPlaylistsQuery,useLazyGetTracksQuery, useCreatePlaylistsMutation } = spotifyApi;
 

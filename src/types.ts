@@ -35,7 +35,10 @@ export type TrackInfo = {
     length: string,
     artists: string [],
     album: string,
-    albumImage: string
+    albumImage: string,
+    isPlayable: boolean,
+    previewUrl: string,
+    uri: string
 
 }
 
@@ -46,6 +49,14 @@ export type PlaylistInfo = {
     totalTracks: number,
     tracks: TrackInfo [],
     image: string
+}
+
+export type PlaylistCreateData = {
+    name: string,
+    description: null | string,
+    public: boolean,
+    uris: string [],
+    userId: string
 }
 
 export function isTrackArray(data: TopTrackInfo[] | TopArtistInfo[]): data is TopTrackInfo[] {

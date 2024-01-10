@@ -1,6 +1,8 @@
 "use client"
 import PlaylistPanel from "@/components/PlaylistPanel";
 import { useGetPlaylistsQuery } from "@/redux/slices/apiSlice";
+import Link from "next/link";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 
 export default function Playlists() {
@@ -28,12 +30,13 @@ export default function Playlists() {
 
     if (data) {
       
-        content =  data.map(playlists=> <PlaylistPanel key={playlists.id} playlistInfo={playlists} />)
+        content =  data.map(playlists=> <PlaylistPanel key={playlists.id} playlistInfo={playlists} addable={false}/>)
     }
 
     return (
-        <div className=" flex flex-col p-5 gap-5 overflow-y-scroll h-full bg-slate-900 text-slate-100">
+        <div className="snap-x p-5 overflow-x-scroll w-full h-full whitespace-nowrap bg-slate-900 text-slate-100">
             {content}
+            <Link href='/'><FaArrowAltCircleLeft className=" fixed left-8 bottom-8 opacity-50 transition duration-300 text-lime-600 text-5xl hover:text-lime-900 hover:scale-150" /></Link>
         </div>
     )
 }   

@@ -17,7 +17,7 @@ if (access_token === null || access_token === 'undefined') {
 }
 
 
-  const { data, error, isLoading } = useGetUserDataQuery({ accessToken: localStorage.getItem('access_token') });
+  const { data, error, isLoading } = useGetUserDataQuery();
 
   // Include button to reload page
 
@@ -43,7 +43,6 @@ if (access_token === null || access_token === 'undefined') {
     return <h1>Loading...</h1>
   }
 
-  console.log(data)
 
   return (
     <div className="flex flex-col flex-wrap justify-center items-center gap-5 h-full bg-slate-900 ">
