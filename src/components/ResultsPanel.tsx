@@ -45,7 +45,7 @@ export default function ResultsPanel({
     }
     
     return (
-        <div className="inline-flex flex-col snap-center overflow-y-auto w-full h-full gap-5 p-3 mr-4 items-center border-green-400 border-4 rounded-lg">
+        <div className="inline-flex flex-col snap-center overflow-y-auto max-w-2xl w-full md:w-5/12 h-full  gap-5 p-3 mr-4  md:mr-0 md:ml-4 md:float-left items-center border-green-400 border-4 rounded-lg">
             <input name='searchbar' className="w-full bg-slate-700 rounded-lg " type="text" placeholder="Search for a track..." value={search} onChange={(e) => setSearch(e.target.value)} />
             <button className=" w-full transition duration-300 p-4 font-bold border-green-400 border-4 rounded-lg hover:border-slate-200 hover:text-green-400" onClick={handleSearch}>Search</button>
             <h1>Results</h1>

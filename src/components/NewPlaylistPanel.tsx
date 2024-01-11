@@ -35,7 +35,6 @@ export default function NewPlaylistPanel({
 
     useEffect(() => {
         if (isError) {
-            console.log('iserror useeffect fired');
             setMessage('Something went wrong... Try again');
             setPopUpVisibility(true);
         }
@@ -43,9 +42,10 @@ export default function NewPlaylistPanel({
 
     useEffect(() => {
         if (data) {
-            console.log('data useeffect fired');
             setMessage('Playlist Uploaded!');
             setPopUpVisibility(true);
+            setPlaylistName('');
+            removeAllTracks();
         }
     }, [data])
 
@@ -65,7 +65,7 @@ export default function NewPlaylistPanel({
 
 
     return (
-        <div className="inline-flex flex-col snap-center overflow-y-auto w-full h-full gap-5 p-3 items-center border-green-400 border-4 rounded-lg accent-green-400">
+        <div className="inline-flex flex-col snap-center overflow-y-auto max-w-2xl w-full md:w-5/12 h-full md:mr-4 md:float-right  gap-5 p-3 items-center border-green-400 border-4 rounded-lg accent-green-400">
             <h1 className="font-bold">Playlist Name:</h1>
             <input name='playlist' className=" bg-slate-700 w-full rounded-lg p-2 text-2xl" type="text" value={playlistName} onChange={(e) => setPlaylistName(e.target.value)} />
             <label>

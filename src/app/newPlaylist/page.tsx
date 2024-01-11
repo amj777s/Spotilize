@@ -29,10 +29,10 @@ export default function NewPlaylist() {
 
     
     return (
-        <div className="snap-x p-5 overflow-x-auto w-full h-full whitespace-nowrap bg-slate-900 text-slate-100">
+        <div className="snap-x p-5 overflow-x-auto w-full h-full whitespace-nowrap  bg-slate-900 text-slate-100">
             <ResultsPanel addTrack={addTrack} />
             <NewPlaylistPanel removeTrack={removeTrack} trackList={tracks} removeAllTracks={removeAllTracks}/>
-            <Link href='/'><FaArrowAltCircleLeft className=" fixed left-8 bottom-8 opacity-50 transition duration-300 text-lime-600 text-5xl hover:text-lime-900 hover:scale-150" /></Link>
+            <Link href='/' className="fixed left-5 bottom-5 opacity-50 transition duration-300  text-green-400 text-5xl hover:text-green-900 hover:scale-150" ><FaArrowAltCircleLeft /></Link>
         </div>
     )
 }
