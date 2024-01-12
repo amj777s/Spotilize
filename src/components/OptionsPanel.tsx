@@ -44,7 +44,7 @@ export default function OptionsPanel({
     }
 
     return (
-        <div className="snap-center flex flex-col  max-w-lg w-full sm:w-5/12  gap-6 py-5 px-2 text-slate-200 border-green-400 border-4 rounded-lg accent-green-400">
+        <div className="snap-center flex flex-col  max-w-lg  w-full sm:w-5/12  gap-6 py-5 px-2 text-slate-200 border-green-400 border-4 rounded-lg accent-green-400">
             <div className="flex justify-between">
                 <div className="flex flex-col text-lg">
                     <h2 className="font-bold text-center underline decoration-green-400 decoration-2">Time Range</h2>

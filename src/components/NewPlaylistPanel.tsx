@@ -65,13 +65,13 @@ export default function NewPlaylistPanel({
 
 
     return (
-        <div className="inline-flex flex-col snap-center overflow-y-auto max-w-2xl w-full md:w-5/12 h-full md:mr-4 md:float-right  gap-5 p-3 items-center border-green-400 border-4 rounded-lg accent-green-400">
+        <div className="scrollbar inline-flex flex-col snap-center overflow-y-auto max-w-2xl w-full md:w-5/12 h-full md:mr-4 md:float-right  gap-5 p-3 items-center border-green-400 border-4 rounded-lg accent-green-400">
             <h1 className="font-bold">Playlist Name:</h1>
             <input name='playlist' className=" bg-slate-700 w-full rounded-lg p-2 text-2xl" type="text" value={playlistName} onChange={(e) => setPlaylistName(e.target.value)} />
-            <label>
-                Private:
+            <div className="flex items-center gap-2">
+                <h2>Private:</h2>
                 <input type="checkbox" name="privateOption" checked={privateOption} onChange={(e) => setPrivate(e.target.checked)} />
-            </label>
+            </div>
             <button className="w-full transition duration-300 p-4 font-bold border-green-400 border-4 rounded-lg hover:border-slate-200 hover:text-green-400" onClick={createPlaylist}>Create Playlist</button>
             <hr className="w-full h-1 text-slate-200" />
             {content}

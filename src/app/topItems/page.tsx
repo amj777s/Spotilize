@@ -46,7 +46,7 @@ export default function TopItems() {
     }
 
     return (
-        <div className=" overflow-y-auto snap-mandatory snap-y flex flex-col sm:flex-row sm:flex-wrap justify-start sm:justify-center  p-5 gap-5 h-full w-full bg-slate-900 text-slate-100 ">
+        <div className=" scrollbar overflow-y-auto snap-mandatory snap-y flex flex-col sm:flex-row sm:flex-wrap justify-start sm:justify-center  p-5 gap-5 h-full w-full bg-slate-900 text-slate-100 ">
             <OptionsPanel getTopItems={getTopItems} />
             {content}
             <Link href='/' className="fixed left-5 bottom-5 opacity-50 transition duration-300  text-green-400 text-5xl hover:text-green-900 hover:scale-150" ><FaArrowAltCircleLeft /></Link>

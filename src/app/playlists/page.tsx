@@ -38,7 +38,7 @@ export default function Playlists() {
     }
 
     return (
-        <div className="scrollbar snap-mandatory snap-x p-5 overflow-x-auto w-full h-full whitespace-nowrap bg-slate-900 text-slate-100">
+        <div className=" scrollbar snap-mandatory snap-x p-5 overflow-x-scroll overflow-y-hidden w-full h-full whitespace-nowrap bg-slate-900 text-slate-100">
             {content}
             <Link href='/' className="fixed left-5 bottom-5 opacity-50 transition duration-300  text-green-400 text-5xl hover:text-green-900 hover:scale-150" ><FaArrowAltCircleLeft /></Link>
         </div>

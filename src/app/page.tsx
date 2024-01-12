@@ -1,5 +1,5 @@
 'use client'
-
+import { useEffect } from "react";
 import { useGetUserDataQuery } from "@/redux/slices/apiSlice";
 import { useRouter } from "next/navigation"
 import { FaCircleUser, FaStore, FaUsers, FaRectangleList } from "react-icons/fa6";
@@ -12,10 +12,14 @@ export default function Home() {
 
   const router = useRouter();
 
-  const access_token = localStorage.getItem('access_token');
+
+  useEffect(()=>{
+    const access_token = localStorage.getItem('access_token');
   if (access_token === null || access_token === 'undefined') {
     router.push('/login');
   }
+  }, [])
+ 
 
 
   const { data, error, isLoading } = useGetUserDataQuery();
@@ -42,7 +46,7 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className=" h-full w-full flex justify-center items-center gap-3">
+      <div className="h-full w-full flex justify-center items-center gap-3 bg-slate-900 text-slate-100 ">
         <Spinner />
         <h3 className="font-bold">Loading...</h3>
       </div>
