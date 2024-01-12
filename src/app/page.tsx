@@ -1,3 +1,4 @@
+/* eslint  no-explicit-any: "off" */
 'use client'
 import { useEffect } from "react";
 import { useGetUserDataQuery } from "@/redux/slices/apiSlice";
@@ -46,7 +47,7 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="h-full w-full flex justify-center items-center gap-3 bg-slate-900 text-slate-100 ">
+      <div className="h-full w-full flex justify-center items-center gap-3 bg-slate-900 text-slate ">
         <Spinner />
         <h3 className="font-bold">Loading...</h3>
       </div>
