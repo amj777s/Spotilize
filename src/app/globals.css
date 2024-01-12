@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: grey #000;
+    scroll-behavior: auto;
+   
+  }
+
+
+  
+  
+  /* For Chrome, EDGE, Opera, Others */
+  .scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar::-webkit-scrollbar-track { 
+    background: none; 
+  }
+  
+  .scrollbar::-webkit-scrollbar-thumb { 
+    background: grey;
+    border-radius: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar:hover {
+    background: #000;
+  }
+  .scrollbar::-webkit-scrollbar-corner{
+    background-color: none;
+  }
+
+  
+}
+
 * {
   /* border: 1px solid red; */
   margin: 0;
@@ -9,13 +44,13 @@
 
 html {
   height: 100vh;
-  body: 100vw;
+  width: 100vw;
   box-sizing: border-box;  
 }
 
 body {
   height: 100%;
-  body: 100%;
-  overflow-y:auto;
+  width: 100%;
+  
 
 }

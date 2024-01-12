@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useGetUserDataQuery, useLazyGetTracksQuery } from "@/redux/slices/apiSlice";
 import TrackPanel from "./TrackPanel";
 import { TrackInfo } from "@/types";
+import Spinner from "./Spinner";
 export default function ResultsPanel({
     addTrack
 }:{
@@ -23,7 +24,10 @@ export default function ResultsPanel({
     
     if (isLoading) {
         content = (
-            <h1>Loading...</h1> 
+            <div className="  flex justify-center items-center gap-3">
+                <Spinner />
+                <h3 className="font-bold">Loading...</h3>
+            </div>
         )
     }
     if (error) {

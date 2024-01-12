@@ -1,5 +1,6 @@
 'use client'
 import { FaArrowAltCircleLeft } from "react-icons/fa";
+import Spinner from "@/components/Spinner";
 import Link from "next/link";
 import OptionsPanel from "@/components/OptionsPanel";
 import TopTrackPanel from "@/components/TopTrackPanel";
@@ -14,7 +15,10 @@ export default function TopItems() {
 
     if (isLoading) {
         content = (
-            <h1>Loading...</h1> 
+            <div className=" flex justify-center items-center gap-3">
+            <Spinner />
+            <h3 className="font-bold">Loading...</h3>
+        </div>
         )
     }
     if (error) {

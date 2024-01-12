@@ -1,5 +1,6 @@
 'use client'
 import { useEffect } from "react";
+import Spinner from "@/components/Spinner";
 import useSWR from "swr";
 import { Spotify } from "@/spotify/spot";
 import { useRouter } from "next/navigation";
@@ -18,24 +19,38 @@ export default function Authorized() {
     const { data, error, isLoading } = useSWR('/', getTokens);
     const router = useRouter();
 
+    let content;
+
     if(error){
     
-        return (
-            <p>{error}</p>
+       content =  (
+            <h3>{error}</h3>
         )
     }
 
     if(isLoading){
-        return (
-            <p>Authorizing...</p>
+        content = (
+            <div className=" h-full w-full flex justify-center items-center gap-3">
+            <Spinner />
+            <h3 className="font-bold">Authorizing...</h3>
+        </div>
         )
     }
 
     if (data){
        router.push('/');
-        return (
-            <p>redirecting...</p>
+        content = (
+            <div className=" h-full w-full flex justify-center items-center gap-3">
+            <Spinner />
+            <h3 className="font-bold">Redirecting...</h3>
+        </div>
         )
     }
+
+    return (
+        <div className="flex justify-center items-center w-full h-full bg-slate-900 text-slate-100">
+            {content}
+        </div>
+    )
     
 }
