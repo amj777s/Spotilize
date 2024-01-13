@@ -1,9 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userInfoReducer from '../redux/slices/userInfoSlice';
 import { spotifyApi } from "./slices/apiSlice";
 export const store = configureStore({
     reducer: {
-        userData: userInfoReducer,
         [spotifyApi.reducerPath]: spotifyApi.reducer
     },
     middleware: (getDefaultMiddleWare) => 

@@ -1,4 +1,4 @@
-/* eslint  no-explicit-any: "off" */
+
 'use client'
 import { useEffect } from "react";
 import { useGetUserDataQuery } from "@/redux/slices/apiSlice";
