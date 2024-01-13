@@ -1,4 +1,4 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
@@ -7,7 +7,7 @@ import type {
     FetchBaseQueryError,
   } from '@reduxjs/toolkit/query'
 import { Spotify } from "@/spotify/spot";
-import { PlaylistCreateData, PlaylistInfo, SpotifyTopSearchParams, TopArtistInfo, TopTrackInfo, TrackInfo } from "@/types";
+import { PlaylistCreateData, PlaylistInfo, SpotifyTopSearchParams, TopArtistInfo, TopTrackInfo, TrackInfo, SpotifyArtistInfo, SpotifyTrackInfo, SpotifyPlaylistInfo } from "@/types";
 
 
 const baseQuery = fetchBaseQuery({
@@ -53,7 +53,7 @@ export const spotifyApi = createApi({
                 console.log(arg)
                 if(arg.type === 'tracks'){
                     const refinedResponse: TopTrackInfo[] = [];
-                    response.items.map(info => {
+                    response.items.map((info:SpotifyTrackInfo) => {
                         const trackInfo = {} as TopTrackInfo;
                         trackInfo.title = info.name;
                         trackInfo.popularity = info.popularity;
@@ -73,7 +73,7 @@ export const spotifyApi = createApi({
                 }
                 else{
                     const refinedResponse: TopArtistInfo[] = [];
-                    response.items.map(info => {
+                    response.items.map((info:SpotifyArtistInfo) => {
                         const artistInfo = {} as TopArtistInfo;
                         artistInfo.name = info.name;
                         artistInfo.genres = info.genres;
@@ -93,10 +93,10 @@ export const spotifyApi = createApi({
             
             try {
                 const playlists: PlaylistInfo[] = [];
-                const {data} = await baseQueryWithReauth({url: 'me/playlists'},api, extraOptions);
+                const {data}:{data?:any} = await baseQueryWithReauth({url: 'me/playlists'},api, extraOptions);
                 
                 // Fetch data related to playlists
-                data.items.map(playlistInfo => {
+                data.items.map((playlistInfo: SpotifyPlaylistInfo) => {
                     const playlist = {} as PlaylistInfo;
                     playlist.name = playlistInfo.name;
                     playlist.public = playlistInfo.public;
@@ -105,12 +105,12 @@ export const spotifyApi = createApi({
                     playlists.push(playlist);
                     playlist.tracks = [];
                 })
-
                 // Fetch data related to tracks in playlists
                await Promise.all(playlists.map(async (info, index) => {
-                    const {data} = await baseQueryWithReauth({url:`playlists/${info.id}`}, api, extraOptions);
+                    const {data}:{data?:any} = await baseQueryWithReauth({url:`playlists/${info.id}`}, api, extraOptions);
+                    console.log(data);
                     playlists[index].image = data.images[0].url;
-                    data.tracks.items.map(trackInfo => {
+                    data.tracks.items.map((trackInfo:{track:SpotifyTrackInfo}) => {
                         const track = {} as TrackInfo;
                         track.title = trackInfo.track.name;
                         const minutes = Math.floor(trackInfo.track.duration_ms /1000 /60);
@@ -142,7 +142,7 @@ export const spotifyApi = createApi({
             query: (url:string) => url,
             transformResponse: (response: any, meta, arg: string) => {
                 const tracks: TrackInfo[] = [];
-                response.tracks.items.map(trackInfo => {
+                response.tracks.items.map((trackInfo:SpotifyTrackInfo) => {
                     const track = {} as TrackInfo;
                     track.title = trackInfo.name;
                     const minutes = Math.floor(trackInfo.duration_ms /1000 /60);

@@ -1,8 +1,4 @@
 {
-  "extends": "next",
-  "ignorePatterns": ["**/apiSlice.ts"],
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "off"
-}
+
 
 }

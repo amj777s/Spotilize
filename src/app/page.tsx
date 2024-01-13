@@ -97,5 +97,13 @@ export default function Home() {
 
 /* INFO
 ------------------------------
-
+  create feature to analyze users saved tracks and create playlists using k-nearest-neighbors on the track values 
+    -acousticness
+    -danceability
+    -energy
+    -loudness
+    -valence
+    -speechiness
+    -tempo
+    -
 */
