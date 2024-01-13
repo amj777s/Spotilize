@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from "react";
+
 import Spinner from "@/components/Spinner";
 import useSWR from "swr";
 import { Spotify } from "@/spotify/spot";
