@@ -1,12 +1,20 @@
 import { tokenInfo } from "@/types";
+
+
+const env = process.env.NODE_ENV;
+let redirectUrl:string;
+
+if(env === "development" || env === "test"){
+    redirectUrl = 'http://localhost:3000/authorized'
+}else if(env === "production"){
+    redirectUrl = "https://spotilize.vercel.app/authorized"
+}
+
 const clientId: string = "ddd4cd46cead49c3ad709c3589142705";
-const redirectUrl: string = 'http://localhost:3000/authorized';
 const authURL: string = "https://accounts.spotify.com/authorize?";
 const baseURL: string = 'https://api.spotify.com/v1/';
 const tokenEndpoint: string = "https://accounts.spotify.com/api/token";
 const scope: string = "playlist-read-private playlist-modify-public playlist-modify-private user-read-email user-top-read  user-read-private user-library-modify";
-
-
 
 
 export const Spotify = {
